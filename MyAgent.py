@@ -121,24 +121,23 @@ class Player(BasePlayer):
 
     def moveOrder(self, state):
         actions = state.actions()
-        scored_actions = []
+        tile_weights = [
+            4.0, 3.0, 2.0, 1.0,
+            3.0, 1.0, 1.5, 1.0,
+            2.0, 1.5, 1.0, 0.5,
+            1.0, 0.5, 0.25, 0.1
+        ]
 
-        # Scale empty tile value based on the largest tile on the board
-        max_tile_value = max(state._board)
-        empty_tile_value = max(16, max_tile_value / 8)
+        def gradient_score(board):
+            return sum(board[i] * tile_weights[i] for i in range(16))
 
+        scored = []
         for a in actions:
             next_state = state.move(a)
-            # score_gain = next_state.getScore() - state.getScore()
-            score = next_state.getScore()
-            empty_tiles = sum(1 for cell in next_state._board if cell == 0)
+            scored.append((a, gradient_score(next_state._board)))
 
-            # Dynamic weighting based on game progression
-            total_score = score + (empty_tiles * empty_tile_value)
-            scored_actions.append((a, total_score))
-
-        scored_actions.sort(key=lambda x: x[1], reverse=True)
-        return [a for a, _ in scored_actions]
+        scored.sort(key=lambda x: x[1], reverse=True)
+        return [a for a, _ in scored]
 
     def heuristic(self, state):
         """Score-based heuristic using percent-scaled bonuses for features."""
