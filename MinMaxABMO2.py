@@ -154,8 +154,8 @@ class Player(BasePlayer):
 
         # === Feature coefficients slightly more conservative agent ===
         SCORE_WEIGHT = 1.0
-        CORNER_BONUS_PCT = 0.7  # 7% of score at most
-        GRADIENT_BONUS_PCT = 0.08
+        CORNER_BONUS_PCT = 0.55  # 7% of score at most
+        GRADIENT_BONUS_PCT = 0.12
         EMPTY_TILE_PCT = {
             'low': 0.02,   # full board
             'mid': 0.018,
@@ -185,11 +185,11 @@ class Player(BasePlayer):
         gradient_score = self.tile_gradient_score(state)
         value += base_score * GRADIENT_BONUS_PCT * gradient_score
 
-        # if base_score > 11000 and board[0] != max(board):
-        #     value -= base_score * 0.10
+        if base_score < 1000 and board[0] == max(board):
+            value += 0.03 * base_score
+        elif base_score < 2000 and board[0] == max(board):
+            value += 0.02 * base_score
 
-        # if base_score < 4000 and board[0] == max(board):
-        #     value += base_score * 0.03
 
         return value
 

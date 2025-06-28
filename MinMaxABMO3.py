@@ -154,12 +154,12 @@ class Player(BasePlayer):
 
         # === Feature coefficients slightly more conservative agent ===
         SCORE_WEIGHT = 1.0
-        CORNER_BONUS_PCT = 0.50  # 7% of score at most
-        GRADIENT_BONUS_PCT = 0.08
+        CORNER_BONUS_PCT = 0.55  # 7% of score at most
+        GRADIENT_BONUS_PCT = 0.12
         EMPTY_TILE_PCT = {
-            'low': 0.03,   # full board
+            'low': 0.022,   # full board
             'mid': 0.02,
-            'high': 0.015
+            'high': 0.018
         }
 
         # === Compute base score (80% of raw score) ===
@@ -227,7 +227,7 @@ class Player(BasePlayer):
         """Weighted score that rewards anchoring and maintaining monotonic chains from the top-left."""
         anchor = self.anchor_penalty(state)
         chain = self.monotonic_chain_score(state)
-        return 0.8 * anchor + 0.2 * chain  # Tunable mix
+        return 0.7 * anchor + 0.3* chain  # Tunable mix
 
     def tile_gradient_score(self, state):
         """Returns a weighted score based on tile values favoring top-left corner structure."""
