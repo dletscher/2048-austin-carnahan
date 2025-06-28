@@ -154,7 +154,7 @@ class Player(BasePlayer):
 
         # === Feature coefficients slightly more conservative agent ===
         SCORE_WEIGHT = 1.0
-        CORNER_BONUS_PCT = 0.55  # 7% of score at most
+        CORNER_BONUS_PCT = 0.7  # 7% of score at most
         GRADIENT_BONUS_PCT = 0.08
         EMPTY_TILE_PCT = {
             'low': 0.02,   # full board
